@@ -13,7 +13,7 @@ spec:
         app: weather
     spec:
       containers:
-      - image: kr3037/simpleshift-weather:0.02
+      - image: kr3037/simpleshift-weather:0.03
         name: weather
         env:
         - name: KUMULUZEE_DISCOVERY_CLUSTER
