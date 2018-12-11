@@ -13,7 +13,7 @@ spec:
         app: weather
     spec:
       containers:
-      - image: kr3037/simpleshift-weather:0.03
+      - image: kr3037/simpleshift-weather:0.04
         name: weather
         env:
         - name: KUMULUZEE_DISCOVERY_CLUSTER
@@ -21,7 +21,7 @@ spec:
         - name: KUMULUZEE_DISCOVERY_ETCD_HOSTS
           value: http://etcd:2379
         - name: KUMULUZEE_SERVER_BASEURL
-          value: http://159.122.187.27:31319
+          value: http://159.122.187.27:31980
         - name: KUMULUZEE_ENV_NAME
           value: kub
         ports:
