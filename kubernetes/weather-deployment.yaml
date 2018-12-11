@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weather-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: weather
+  template:
+    metadata:
+      labels:
+        app: weather
+    spec:
+      containers:
+      - image: kr3037/simpleshift-weather:0.01
+        name: weather
+        env:
+        - name: KUMULUZEE_DISCOVERY_CLUSTER
+          value: bluemix
+        - name: KUMULUZEE_DISCOVERY_ETCD_HOSTS
+          value: http://etcd:2379
+        - name: KUMULUZEE_SERVER_BASEURL
+          value: http://159.122.187.27:31319
+        - name: KUMULUZEE_ENV_NAME
+          value: kub
+        ports:
+        - containerPort: 8082
+          name: server
+          protocol: TCP
