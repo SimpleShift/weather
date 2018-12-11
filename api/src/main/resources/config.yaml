@@ -1,0 +1,16 @@
+kumuluzee:
+  server:
+    base-url: http://localhost:8082
+    http:
+      port: 8082
+
+  name: weather-service
+  version: 1.0.0
+  env:
+    name: dev
+
+  discovery:
+    etcd:
+      hosts: http://159.122.187.27:32132
+    ttl: 20
+    ping-interval: 15
