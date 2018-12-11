@@ -16,7 +16,7 @@ import java.util.List;
 @Path("/weather")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class OrdersResource {
+public class WeatherResource {
 
     /*
     @Context

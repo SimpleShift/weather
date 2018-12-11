@@ -11,7 +11,6 @@
     <properties>
 
         <kumuluzee.version>3.0.0</kumuluzee.version>
-        <kumuluzee-config.version>1.1.0</kumuluzee-config.version>
         <kumuluzee-discovery.version>1.1.0</kumuluzee-discovery.version>
 
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -48,11 +47,6 @@
         <dependency>
             <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-cdi-weld</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.kumuluz.ee.config</groupId>
-            <artifactId>kumuluzee-config-etcd</artifactId>
-            <version>${kumuluzee-config.version}</version>
         </dependency>
         <dependency>
             <groupId>com.kumuluz.ee.discovery</groupId>
