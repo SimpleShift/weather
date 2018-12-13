@@ -14,11 +14,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.simpleshift.app</groupId>
-            <artifactId>weather-services</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-core</artifactId>
         </dependency>
