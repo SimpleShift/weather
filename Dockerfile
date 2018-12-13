@@ -4,8 +4,8 @@ RUN mkdir /app
 
 WORKDIR /app
 
-ADD ./target/ss-weather-1.0-SNAPSHOT.jar /app
+ADD ./api/target/weather-api-1.0-SNAPSHOT.jar /app
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "ss-weather-1.0-SNAPSHOT.jar"]
+CMD ["java", "-jar", "weather-api-1.0-SNAPSHOT.jar"]
