@@ -59,5 +59,12 @@
             <artifactId>kumuluzee-discovery-etcd</artifactId>
             <version>${kumuluzee-discovery.version}</version>
         </dependency>
+
+
+        <dependency>
+            <groupId>com.simpleshift.app</groupId>
+            <artifactId>weather-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

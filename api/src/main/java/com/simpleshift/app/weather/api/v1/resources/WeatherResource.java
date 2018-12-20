@@ -1,16 +1,15 @@
 package com.simpleshift.app.weather.api.v1.resources;
 
-//import si.fri.rso.samples.orders.entities.Order;
-//import si.fri.rso.samples.orders.services.OrdersBean;
-
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-import java.util.List;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.*;
+import java.io.StringReader;
 
 @ApplicationScoped
 @Path("/weather")
@@ -18,87 +17,41 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 public class WeatherResource {
 
-    /*
-    @Context
-    private UriInfo uriInfo;
+    private Client httpClient;
 
-    @Inject
-    private OrdersBean ordersBean;
-
-    @GET
-    public Response getOrders() {
-
-        List<Order> orders = ordersBean.getOrders(uriInfo);
-
-        return Response.ok(orders).build();
-    }
-    */
-
-    @GET
-    public Response getWeather() {
-        return Response.status(Response.Status.OK).entity("Vreme je lepo.").build();
+    @PostConstruct
+    private void init() {
+        httpClient = ClientBuilder.newClient();
     }
 
-    /*
-    @POST
-    public Response createOrder(Order order) {
-
-        if (order.getTitle() == null || order.getTitle().isEmpty()) {
+    @GET
+    public Response getWeather(@QueryParam("lat") String lat, @QueryParam("lon") String lon) {
+        if (lat == null || lon == null){
             return Response.status(Response.Status.BAD_REQUEST).build();
         } else {
-            order = ordersBean.createOrder(order);
-        }
+            String response = darkskyAPI(lat, lon);
 
-        if (order.getId() != null) {
-            return Response.status(Response.Status.CREATED).entity(order).build();
-        } else {
-            return Response.status(Response.Status.CONFLICT).entity(order).build();
-        }
-    }
+            JsonReader jsonReader = Json.createReader(new StringReader(response));
+            JsonObject object = jsonReader.readObject();
+            jsonReader.close();
 
-    @PUT
-    @Path("{orderId}")
-    public Response putOrder(@PathParam("orderId") Integer orderId, Order order) {
+            String summary = object.getJsonObject("currently").getJsonString("summary").getString();
+            Double tempF = object.getJsonObject("currently").getJsonNumber("temperature").doubleValue();
+            Double tempC = ((tempF - 32)*5)/9;
 
-        order = ordersBean.putOrder(orderId, order);
+            String ret = String.format("%s (%.0f °C)", summary, tempC);
 
-        if (order == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        } else {
-            if (order.getId() != null)
-                return Response.status(Response.Status.OK).entity(order).build();
-            else
-                return Response.status(Response.Status.NOT_MODIFIED).build();
+            return Response.status(Response.Status.OK).entity(ret).build();
         }
     }
 
-    @PATCH
-    @Path("{orderId}/completed")
-    public Response orderCompleted(@PathParam("orderId") Integer orderId) {
-
-        Order order = ordersBean.completeOrder(orderId);
-
-        if (order == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        } else {
-            if (order.getId() != null)
-                return Response.status(Response.Status.OK).entity(order).build();
-            else
-                return Response.status(Response.Status.NOT_MODIFIED).build();
+    private String darkskyAPI(String lat, String lon) {
+        try {
+            return httpClient
+                    .target("https://api.darksky.net/forecast/a3fac864bd63b7bf93e6c00b9c6d85ca/" + lat + "," + lon)
+                    .request().get(String.class);
+        } catch (WebApplicationException | ProcessingException e) {
+            throw new InternalServerErrorException(e);
         }
     }
-
-    @DELETE
-    @Path("{orderId}")
-    public Response deleteCustomer(@PathParam("orderId") String orderId) {
-
-        boolean deleted = ordersBean.deleteOrder(orderId);
-
-        if (deleted) {
-            return Response.status(Response.Status.GONE).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-    }
-    */
 }
